@@ -1,0 +1,217 @@
+Version 3.2 HI-TECH Software Intermediate Code
+"36 /opt/microchip/xc8/v1.35/include/math.h
+[v _sin `(d ~T0 @X0 0 ef1`d ]
+"37
+[v _cos `(d ~T0 @X0 0 ef1`d ]
+"40
+[v _acos `(d ~T0 @X0 0 ef1`d ]
+"42
+[v _atan2 `(d ~T0 @X0 0 ef2`d`d ]
+"53
+[v _fmod `(d ~T0 @X0 0 ef2`d`d ]
+[; ;math.h: 30: extern double fabs(double);
+[; ;math.h: 31: extern double floor(double);
+[; ;math.h: 32: extern double ceil(double);
+[; ;math.h: 33: extern double modf(double, double *);
+[; ;math.h: 34: extern double sqrt(double);
+[; ;math.h: 35: extern double atof(const char *);
+[; ;math.h: 36: extern double sin(double) ;
+[; ;math.h: 37: extern double cos(double) ;
+[; ;math.h: 38: extern double tan(double) ;
+[; ;math.h: 39: extern double asin(double) ;
+[; ;math.h: 40: extern double acos(double) ;
+[; ;math.h: 41: extern double atan(double);
+[; ;math.h: 42: extern double atan2(double, double) ;
+[; ;math.h: 43: extern double log(double);
+[; ;math.h: 44: extern double log10(double);
+[; ;math.h: 45: extern double pow(double, double) ;
+[; ;math.h: 46: extern double exp(double) ;
+[; ;math.h: 47: extern double sinh(double) ;
+[; ;math.h: 48: extern double cosh(double) ;
+[; ;math.h: 49: extern double tanh(double);
+[; ;math.h: 50: extern double eval_poly(double, const double *, int);
+[; ;math.h: 51: extern double frexp(double, int *);
+[; ;math.h: 52: extern double ldexp(double, int);
+[; ;math.h: 53: extern double fmod(double, double);
+[; ;math.h: 54: extern double trunc(double);
+[; ;math.h: 55: extern double round(double);
+"40 GPS_distance.c
+[v _deg2rad `(d ~T0 @X0 1 ef1`d ]
+{
+[; ;GPS_distance.c: 40: double deg2rad(double deg) {
+[e :U _deg2rad ]
+[v _deg `d ~T0 @X0 1 r1 ]
+[f ]
+[; ;GPS_distance.c: 41: return (deg * 3.14159265358979323846 / 180);
+"41
+[e ) / * _deg .3.14159265358979323846 -> -> 180 `i `d ]
+[e $UE 1  ]
+[; ;GPS_distance.c: 42: }
+"42
+[e :UE 1 ]
+}
+"47
+[v _rad2deg `(d ~T0 @X0 1 ef1`d ]
+{
+[; ;GPS_distance.c: 47: double rad2deg(double rad) {
+[e :U _rad2deg ]
+[v _rad `d ~T0 @X0 1 r1 ]
+[f ]
+[; ;GPS_distance.c: 48: return (rad * 180 / 3.14159265358979323846);
+"48
+[e ) / * _rad -> -> 180 `i `d .3.14159265358979323846 ]
+[e $UE 2  ]
+[; ;GPS_distance.c: 49: }
+"49
+[e :UE 2 ]
+}
+"56
+[v _distance `(d ~T0 @X0 1 ef5`d`d`d`d`uc ]
+{
+[; ;GPS_distance.c: 56: double distance(double lat1, double lon1, double lat2, double lon2, char unit) {
+[e :U _distance ]
+[v _lat1 `d ~T0 @X0 1 r1 ]
+[v _lon1 `d ~T0 @X0 1 r2 ]
+[v _lat2 `d ~T0 @X0 1 r3 ]
+[v _lon2 `d ~T0 @X0 1 r4 ]
+[v _unit `uc ~T0 @X0 1 r5 ]
+[f ]
+"57
+[v _theta `d ~T0 @X0 1 a ]
+[v _dist `d ~T0 @X0 1 a ]
+[; ;GPS_distance.c: 57: double theta, dist;
+[; ;GPS_distance.c: 58: theta = lon1 - lon2;
+"58
+[e = _theta - _lon1 _lon2 ]
+[; ;GPS_distance.c: 59: dist = sin(deg2rad(lat1)) * sin(deg2rad(lat2)) + cos(deg2rad(lat1)) * cos(deg2rad(lat2)) * cos(deg2rad(theta));
+"59
+[e = _dist + * ( _sin (1 ( _deg2rad (1 _lat1 ( _sin (1 ( _deg2rad (1 _lat2 * * ( _cos (1 ( _deg2rad (1 _lat1 ( _cos (1 ( _deg2rad (1 _lat2 ( _cos (1 ( _deg2rad (1 _theta ]
+[; ;GPS_distance.c: 60: dist = acos(dist);
+"60
+[e = _dist ( _acos (1 _dist ]
+[; ;GPS_distance.c: 61: dist = rad2deg(dist);
+"61
+[e = _dist ( _rad2deg (1 _dist ]
+[; ;GPS_distance.c: 62: dist = dist * 60 * 1.1515;
+"62
+[e = _dist * * _dist -> -> 60 `i `d .1.1515 ]
+[; ;GPS_distance.c: 63: switch(unit) {
+"63
+[e $U 5  ]
+{
+[; ;GPS_distance.c: 64: case 'M':
+"64
+[e :U 6 ]
+[; ;GPS_distance.c: 65: break;
+"65
+[e $U 4  ]
+[; ;GPS_distance.c: 66: case 'K':
+"66
+[e :U 7 ]
+[; ;GPS_distance.c: 67: dist = dist * 1.609344;
+"67
+[e = _dist * _dist .1.609344 ]
+[; ;GPS_distance.c: 68: break;
+"68
+[e $U 4  ]
+[; ;GPS_distance.c: 69: case 'N':
+"69
+[e :U 8 ]
+[; ;GPS_distance.c: 70: dist = dist * 0.8684;
+"70
+[e = _dist * _dist .0.8684 ]
+[; ;GPS_distance.c: 71: break;
+"71
+[e $U 4  ]
+"72
+}
+[; ;GPS_distance.c: 72: }
+[e $U 4  ]
+"63
+[e :U 5 ]
+[e [\ _unit , $ -> -> 77 `ui `uc 6
+ , $ -> -> 75 `ui `uc 7
+ , $ -> -> 78 `ui `uc 8
+ 4 ]
+"72
+[e :U 4 ]
+[; ;GPS_distance.c: 73: return (dist);
+"73
+[e ) _dist ]
+[e $UE 3  ]
+[; ;GPS_distance.c: 74: }
+"74
+[e :UE 3 ]
+}
+"84
+[v _heading `(d ~T0 @X0 1 ef4`d`d`d`d ]
+{
+[; ;GPS_distance.c: 84: double heading(double lat1, double lon1, double lat2, double lon2){
+[e :U _heading ]
+[v _lat1 `d ~T0 @X0 1 r1 ]
+[v _lon1 `d ~T0 @X0 1 r2 ]
+[v _lat2 `d ~T0 @X0 1 r3 ]
+[v _lon2 `d ~T0 @X0 1 r4 ]
+[f ]
+"86
+[v _a `d ~T0 @X0 1 a ]
+[; ;GPS_distance.c: 86: double a = deg2rad(lat1);
+[e = _a ( _deg2rad (1 _lat1 ]
+"87
+[v _b `d ~T0 @X0 1 a ]
+[; ;GPS_distance.c: 87: double b = deg2rad(lon1);
+[e = _b ( _deg2rad (1 _lon1 ]
+"88
+[v _c `d ~T0 @X0 1 a ]
+[; ;GPS_distance.c: 88: double c = deg2rad(lat2);
+[e = _c ( _deg2rad (1 _lat2 ]
+"89
+[v _d `d ~T0 @X0 1 a ]
+[; ;GPS_distance.c: 89: double d = deg2rad(lon2);
+[e = _d ( _deg2rad (1 _lon2 ]
+[; ;GPS_distance.c: 91: if (cos(c) * sin(d - b) == 0){
+"91
+[e $ ! == * ( _cos (1 _c ( _sin (1 - _d _b -> -> 0 `i `d 10  ]
+{
+[; ;GPS_distance.c: 92: if (c > a)
+"92
+[e $ ! > _c _a 11  ]
+[; ;GPS_distance.c: 93: return 0;
+"93
+[e ) -> -> 0 `i `d ]
+[e $UE 9  ]
+[e $U 12  ]
+"94
+[e :U 11 ]
+[; ;GPS_distance.c: 94: else
+[; ;GPS_distance.c: 95: return 180;
+"95
+[e ) -> -> 180 `i `d ]
+[e $UE 9  ]
+[e :U 12 ]
+"96
+}
+[; ;GPS_distance.c: 96: }
+[e $U 13  ]
+"97
+[e :U 10 ]
+[; ;GPS_distance.c: 97: else
+[; ;GPS_distance.c: 98: {
+"98
+{
+"99
+[v _angle `d ~T0 @X0 1 a ]
+[; ;GPS_distance.c: 99: double angle = atan2(cos(c) * sin(d - b), sin(c) * cos(a) - sin(a) * cos(c) * cos(d - b));
+[e = _angle ( _atan2 (2 , * ( _cos (1 _c ( _sin (1 - _d _b - * ( _sin (1 _c ( _cos (1 _a * * ( _sin (1 _a ( _cos (1 _c ( _cos (1 - _d _b ]
+[; ;GPS_distance.c: 100: return fmod( (angle * 180 / 3.14159265358979323846 + 360), 360 );
+"100
+[e ) ( _fmod (2 , + / * _angle -> -> 180 `i `d .3.14159265358979323846 -> -> 360 `i `d -> -> 360 `i `d ]
+[e $UE 9  ]
+"101
+}
+[e :U 13 ]
+[; ;GPS_distance.c: 101: }
+[; ;GPS_distance.c: 102: }
+"102
+[e :UE 9 ]
+}
